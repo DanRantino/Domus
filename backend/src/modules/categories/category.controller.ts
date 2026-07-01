@@ -1,18 +1,17 @@
+import { CategoryResponseDto } from './dto/category-response.dto';
 import {
   Body,
   Controller,
   Delete,
   Get,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
-import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 import { CategoryService } from './category.service';
-import type { CategoryResponseDto } from './dto/category-response.dto';
-import { CreateCategorySchema, UpdateCategorySchema } from './dto';
-import type { CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
+import { IdParamDto } from 'src/common/dto/id-param.dto';
 
 @Controller('categories')
 export class CategoryController {
@@ -25,30 +24,28 @@ export class CategoryController {
 
   @Post()
   create(
-    @Body(new ZodValidationPipe(CreateCategorySchema))
+    @Body()
     createCategoryDto: CreateCategoryDto,
   ): Promise<CategoryResponseDto> {
     return this.categoryService.create(createCategoryDto);
   }
 
   @Get(':id')
-  findOne(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<CategoryResponseDto | null> {
+  findOne(@Param() { id }: IdParamDto): Promise<CategoryResponseDto> {
     return this.categoryService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id', new ParseUUIDPipe()) id: string,
-    @Body(new ZodValidationPipe(UpdateCategorySchema))
+    @Param() { id }: IdParamDto,
+    @Body()
     updateCategoryDto: UpdateCategoryDto,
   ): Promise<CategoryResponseDto> {
     return this.categoryService.update(id, updateCategoryDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', new ParseUUIDPipe()) id: string): Promise<void> {
+  remove(@Param() { id }: IdParamDto): Promise<void> {
     return this.categoryService.remove(id);
   }
 }

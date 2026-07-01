@@ -8,6 +8,8 @@ import corsConfig from './config/cors.config';
 import dbConfig from './config/database.config';
 import { validate } from './config/env.validations';
 import { CategoryModule } from './modules/categories/category.module';
+import { APP_PIPE } from '@nestjs/core';
+import { AppZodValidationPipe } from './common/pipes/zod-validation.pipe';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,6 +32,12 @@ import { CategoryModule } from './modules/categories/category.module';
     CategoryModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useClass: AppZodValidationPipe,
+    },
+  ],
 })
 export class AppModule {}

@@ -1,6 +1,5 @@
-import { CreateCategorySchema } from './category.schema';
-import { z } from 'zod';
+import { createZodDto } from 'nestjs-zod';
+import { createCategorySchema } from './category.schema';
 
-export const UpdateCategorySchema = CreateCategorySchema.partial().strict();
-
-export type UpdateCategoryDto = z.infer<typeof UpdateCategorySchema>;
+export const updateCategorySchema = createCategorySchema.partial().strict();
+export class UpdateCategoryDto extends createZodDto(updateCategorySchema) {}

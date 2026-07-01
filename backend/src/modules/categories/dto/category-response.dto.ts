@@ -1,6 +1,7 @@
+import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
-export const CategoryResponseSchema = z.object({
+export const categoryResponseSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1).max(100),
   description: z.string().max(500).nullish(),
@@ -9,4 +10,4 @@ export const CategoryResponseSchema = z.object({
   deletedAt: z.date().nullish(),
 });
 
-export type CategoryResponseDto = z.infer<typeof CategoryResponseSchema>;
+export class CategoryResponseDto extends createZodDto(categoryResponseSchema) {}
