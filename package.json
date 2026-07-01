@@ -14,5 +14,8 @@
     "lint:fix": "npm run lint:fix --workspaces --if-present",
     "format": "npm run format --workspaces --if-present",
     "format:check": "npm run format:check --workspaces --if-present"
+  },
+  "dependencies": {
+    "nestjs-zod": "^5.4.0"
   }
 }

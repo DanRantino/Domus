@@ -5,7 +5,7 @@ export const envSchema = z.object({
     .enum(['development', 'production', 'test'])
     .default('development'),
   APP_PORT: z.coerce.number().default(3000),
-  DATABASE_URL: z.string().url(),
+  DATABASE_URL: z.string(),
   CORS_ALLOWED_ORIGINS: z.string().optional(),
   APP_NAME: z.string().default('Domus'),
   TYPEORM_SYNCHRONIZE: z.coerce.boolean().default(false),
@@ -18,7 +18,9 @@ export function validate(config: Record<string, unknown>) {
   if (!result.success) {
     throw new Error(
       `Config validation error: ${result.error.issues
-        .map((issue) => `${issue.path.join('.')} - ${issue.message}`)
+        .map(
+          (issue: z.ZodIssue) => `${issue.path.join('.')} - ${issue.message}`,
+        )
         .join('\n')}`,
     );
   }

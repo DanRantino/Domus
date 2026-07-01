@@ -7,6 +7,7 @@ import appConfig from './config/app.config';
 import corsConfig from './config/cors.config';
 import dbConfig from './config/database.config';
 import { validate } from './config/env.validations';
+import { CategoryModule } from './modules/categories/category.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,12 +19,15 @@ import { validate } from './config/env.validations';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService): TypeOrmModuleOptions => ({
-        type: 'sqlite',
-        database: config.get<string>('DATABASE_PATH', 'domus.sqlite'),
+        type: 'postgres',
+        url: config.get<string>('db.url'),
         autoLoadEntities: true,
-        synchronize: config.get<string>('NODE_ENV') !== 'production',
+        synchronize: false,
+        migrationsRun: false,
+        logging: config.get('app.env') === 'development',
       }),
     }),
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
