@@ -16,6 +16,7 @@
     "format:check": "npm run format:check --workspaces --if-present"
   },
   "dependencies": {
+    "@anatine/zod-openapi": "^2.2.8",
     "nestjs-zod": "^5.4.0"
   }
 }

@@ -6,6 +6,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { cleanupOpenApiDoc } from 'nestjs-zod';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -27,7 +28,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('docs', app, document, {
+  SwaggerModule.setup('docs', app, cleanupOpenApiDoc(document), {
     swaggerOptions: {
       persistAuthorization: true,
     },
